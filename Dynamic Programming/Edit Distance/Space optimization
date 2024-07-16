@@ -1,0 +1,25 @@
+int minDistance(string word1, string word2) {
+        int n = word1.size();
+        int m = word2.size();
+        vector<int> prev(m+1, 0), curr(m+1, 0);
+
+        for(int j=0;j<=m;j++){
+            prev[j] = j;
+        }
+
+        for(int indx1=1;indx1<=n;indx1++){
+            curr[0] = indx1;
+            for(int indx2=1;indx2<=m;indx2++){
+                if(word1[indx1-1] == word2[indx2-1]){
+                    curr[indx2] = prev[indx2-1];
+                }
+                else{
+                    curr[indx2] = min(1+ prev[indx2], min(1+curr[indx2-1], 1+prev[indx2-1]));
+                }
+            }
+            prev = curr;
+        }
+        return prev[m];
+    }
+TC - O(n*n)
+SC - O(m+m)
