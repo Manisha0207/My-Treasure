@@ -1,0 +1,30 @@
+int f(int indx1, int indx2, string s1, string s2, vector<vector<int>>& dp){
+        if(indx1 < 0){
+            int sum = 0;
+            for(int i=0;i<=indx2;i++){
+                sum += s2[i]; 
+            }
+            return sum;
+        }
+        if(indx2 < 0){
+            int sum = 0;
+            for(int i=0;i<=indx1;i++){
+                sum += s1[i];
+            }
+            return sum;
+        }
+        if(dp[indx1][indx2] != -1) return dp[indx1][indx2];
+
+        if(s1[indx1]== s2[indx2]) return dp[indx1][indx2] = f(indx1-1, indx2-1, s1, s2, dp);
+        else return dp[indx1][indx2] = min(int(s1[indx1])+f(indx1-1, indx2, s1, s2, dp), int(s2[indx2])+f(indx1, indx2-1, s1, s2, dp));
+    }
+public:
+    int minimumDeleteSum(string s1, string s2) {
+        int n = s1.length();
+        int m = s2.length();
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        return f(n-1, m-1, s1, s2, dp);
+    }
+TC - O(n*n) 
+SC - O(n*n) + O(n+m)
+Memory Limit Exceeded
