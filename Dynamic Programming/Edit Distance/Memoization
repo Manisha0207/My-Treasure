@@ -1,0 +1,26 @@
+class Solution {   
+int f(int indx1, int indx2, string word1, string word2, vector<vector<int>>& dp){
+    if(indx1<0) return indx2+1;
+    if(indx2<0) return indx1+1;
+
+    if(dp[indx1][indx2] != -1) return dp[indx1][indx2];
+    if(word1[indx1] == word2[indx2]){
+        return dp[indx1][indx2] = f(indx1-1, indx2-1, word1, word2, dp);
+    }
+    else{
+        return dp[indx1][indx2] = min(1+f(indx1-1, indx2, word1, word2, dp), min(1+f(indx1, indx2-1, word1, word2, dp), 1+f(indx1-1, indx2-1, word1, word2, dp)));
+    }
+}
+
+public:
+    int minDistance(string word1, string word2) {
+        int n = word1.size();
+        int m = word2.size();
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        return f(n-1, m-1, word1, word2, dp);
+    }
+};
+
+TC - 
+SC - 
+Accepted
