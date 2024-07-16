@@ -1,0 +1,55 @@
+# Brute force approach - Method -1
+
+bool isPalindrome(string temp){
+  int i=0, j=temp.length()-1;
+  while(i<j){
+    if(temp[i] != temp[j]){
+        return false;
+    }
+    i++;
+    j--;
+  }
+  return true;
+}
+int countSubstrings(string s) {
+        int cnt = 0;
+        int n = s.length();
+        for(int i=0;i<n;i++){
+            string temp = "";
+            for(int j=i;j<n;j++){
+                temp += s[j];
+                if(isPalindrome(temp)) cnt++;
+            }
+        }
+        return cnt;
+}
+
+# Using Dp - Approach - 2
+
+int countSubstrings(string s) {
+        int n = s.length();
+        vector<vector<bool>> dp(n, vector<bool>(n, false));
+        int cnt = 0;
+
+        // Base case: single letter substrings are palindromes
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+            cnt++;
+        }
+
+        // Base case: two-letter substrings
+        for (int i = 0; i < n - 1; i++) {
+            dp[i][i + 1] = (s[i] == s[i + 1]);
+            cnt += dp[i][i + 1];
+        }
+
+        // Substrings of length 3 or more
+        for (int len = 2; len < n; len++) {
+            for (int i = 0; i + len < n; i++) {
+                int j = i + len;
+                dp[i][j] = dp[i + 1][j - 1] && (s[i] == s[j]);
+                cnt += dp[i][j];
+            }
+        }
+        return cnt;
+    }
