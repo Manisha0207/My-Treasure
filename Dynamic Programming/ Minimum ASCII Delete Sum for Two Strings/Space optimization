@@ -1,0 +1,27 @@
+int minimumDeleteSum(string s1, string s2) {
+        int n = s1.length();
+        int m = s2.length();
+        vector<int> prev(m+1, 0), curr(m+1, 0);
+
+        for(int indx2=0; indx2<=m;indx2++){
+            int sum = 0;
+            for(int i=0;i<indx2;i++){
+                sum += s2[i]; 
+            }
+            prev[indx2] = sum;
+        }
+
+        for(int indx1=1;indx1<=n;indx1++){
+            int sum =0;
+            for(int i=0;i<indx1;i++){
+                sum += s1[i];
+            }
+            curr[0] = sum;
+            for(int indx2=1;indx2<=m;indx2++){
+                if(s1[indx1-1]== s2[indx2-1]) curr[indx2] =prev[indx2-1];
+                else curr[indx2] = min(int(s1[indx1-1])+prev[indx2], int(s2[indx2-1])+curr[indx2-1]);
+            }
+            prev = curr;
+        }
+        return prev[m];
+    }
